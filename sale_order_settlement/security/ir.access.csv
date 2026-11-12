@@ -1,0 +1,6 @@
+id,name,model_id,group_id/id,operation,domain
+access_sale_settlement_payment_wizard_salesman,sale.settlement.payment.wizard salesman,sale.settlement.payment.wizard,sales_team.group_sale_salesman,crud,
+access_sale_settlement_return_wizard_salesman,sale.settlement.return.wizard salesman,sale.settlement.return.wizard,sales_team.group_sale_salesman,crud,
+access_sale_settlement_return_wizard_line_salesman,sale.settlement.return.wizard.line salesman,sale.settlement.return.wizard.line,sales_team.group_sale_salesman,crud,
+access_sale_settlement_refund_wizard_salesman,sale.settlement.refund.wizard salesman,sale.settlement.refund.wizard,sales_team.group_sale_salesman,crud,
+access_sale_settlement_add_product_wizard_salesman,sale.settlement.add.product.wizard salesman,sale.settlement.add.product.wizard,sales_team.group_sale_salesman,crud,

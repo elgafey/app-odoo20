@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        شاشة أمر البيع — كل أزرار التسوية في مكانها.
+
+        المراسي (مُتحقَّق منها في نواة Odoo 20):
+        * زر "Create Invoice" الحامل id="create_invoice"
+          في sale.view_order_form (sale/views/sale_order_views.xml:282).
+        * ``div.oe_button_box`` (نفس الملف، سطر 430).
+        * ``group[name="sale_total"]`` (نفس الملف، سطر 1019).
+
+        Odoo 20: لا ``attrs`` ولا ``states`` — تعبيرات ``invisible``
+        مباشرة، وكل حقل يظهر في تعبير لازم أن يكون حاضرًا في الشاشة.
+    -->
+    <record id="view_order_form_sale_order_settlement" model="ir.ui.view">
+        <field name="name">sale.order.form.sale.order.settlement</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!--
+                نوع الفاتورة (Cash / Credit) أسفل حقل العميل مباشرة.
+
+                المرساة: ``group[name="partner_details"]`` في
+                ``sale.view_order_form`` (المجموعة التي تحمل partner_id).
+                الافتراضي ``cash`` (بيع نقدي)، ومن يريد الآجل يغيّره إلى
+                ``credit``. قائمة منسدلة بخلفية صفراء ليبقى ظاهرًا للموظف
+                (التلوين في static/src/css/sale_order_settlement.css).
+            -->
+            <xpath expr="//group[@name='partner_details']/field[@name='partner_id']" position="after">
+                <field name="sst_invoice_type" class="o_sst_invoice_type"/>
+            </xpath>
+
+            <!--
+                عدّاد الدفعات: يجب أن يكون الحقل حاضرًا في الشاشة لأن Odoo
+                يتحقّق من كل اسم ورد داخل `invisible`
+                (name_manager.must_have_fields).
+            -->
+            <xpath expr="//sheet" position="inside">
+                <field name="sst_payment_count" invisible="1"/>
+            </xpath>
+
+            <!--
+                زر ذكي لشحنات الإرجاع: العدّاد داخل الزر ذاته يكفي
+                لتغذية ``invisible`` — وهو النمط نفسه الذي تستخدمه
+                النواة لأزرارها الذكية.
+            -->
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_open_settlement_returns" type="object"
+                        class="oe_stat_button" icon="fa-undo"
+                        invisible="sst_return_count == 0">
+                    <field name="sst_return_count" widget="statinfo"
+                           string="Returns"/>
+                </button>
+            </xpath>
+
+            <button id="create_invoice" position="after">
+                <button name="action_settlement_confirm_delivery_invoice"
+                        type="object"
+                        string="Confirm Delivery &amp; Invoice"
+                        class="btn-success"
+                        data-hotkey="p"
+                        help="Confirm the order (if it is still a quotation), validate the delivery and create the invoice — in one click."
+                        invisible="state not in ('draft', 'sent', 'sale') or not id or locked or invoice_status == 'invoiced'"/>
+                <button name="action_open_settlement_return_wizard"
+                        type="object"
+                        string="Return"
+                        class="btn-secondary"
+                        data-hotkey="t"
+                        help="Return the delivered goods: all of it, or only the quantities you enter."
+                        invisible="state != 'sale' or not id"/>
+                <button name="action_open_settlement_add_product_wizard"
+                        type="object"
+                        string="Add Product"
+                        class="btn-secondary"
+                        data-hotkey="a"
+                        help="Sell another product on this confirmed order and invoice it right away — the window tells you the amount to collect from the customer before you press."
+                        invisible="state != 'sale' or not id or locked"/>
+                <button name="action_open_settlement_payment_wizard"
+                        type="object"
+                        string="Register Payment"
+                        class="btn-primary"
+                        data-hotkey="r"
+                        context="{'sst_mode': 'register'}"
+                        help="Record a real payment against the invoice of this order and reconcile it."
+                        invisible="state != 'sale' or not id or locked"/>
+                <!--
+                    زرّ «Refund Customer»: يظهر فقط حين يكون الرصيد في
+                    صالح الزبون (``sst_due_state == 'refund'``). ولا
+                    نقيّده بـ ``locked``: المقفلة هي بالضبط الأوامر
+                    المفوترة والمغلقة، وهي الموضع الذي يُردّ فيه المال.
+                -->
+                <button name="action_open_settlement_refund_wizard"
+                        type="object"
+                        string="Refund Customer"
+                        data-hotkey="g"
+                        help="Give the customer back what this order owes them — the window tells you the amount and the journal it leaves through."
+                        invisible="sst_due_state != 'refund' or state != 'sale' or not id"/>
+                <button name="action_open_settlement_payment_wizard"
+                        type="object"
+                        string="Replace Payment"
+                        data-hotkey="x"
+                        context="{'sst_mode': 'replace'}"
+                        help="Cancel the active payment(s) and create a new one in the same transaction, so the invoice is never left unpaid."
+                        invisible="state != 'sale' or not id or locked or sst_payment_count == 0"/>
+            </button>
+
+            <!--
+                الصندوق الملوّن + الرصيد المستحق، أسفل الإجمالي مباشرةً.
+
+                الحالة ``none`` (لا فاتورة مرحّلة بعد) لا ترسم شيئًا:
+                مبلغ مستحقّ على مسودة ليس شيئًا. والحالة ``settled``
+                ترسم صندوقًا أخضر، وأما ``collect`` و ``refund`` فصندوق
+                أحمر — اللون إشارة تنبيه، والاتجاه يتلى من النص.
+            -->
+            <xpath expr="//group[@name='sale_total']" position="inside">
+                <field name="sst_due_state" invisible="1"/>
+                <div class="alert alert-danger d-flex align-items-center gap-2 mb-0"
+                     role="alert"
+                     invisible="sst_due_state not in ('collect', 'refund')">
+                    <i class="fa fa-exclamation-triangle"/>
+                    <field name="sst_due_text" readonly="1" nolabel="1"/>
+                </div>
+                <div class="alert alert-success mb-0" role="alert"
+                     invisible="sst_due_state != 'settled'">
+                    <field name="sst_due_text" readonly="1" nolabel="1"/>
+                </div>
+                <div class="d-flex justify-content-between align-items-baseline gap-3">
+                    <span class="fw-bolder">Amount due</span>
+                    <field name="sst_amount_due" widget="monetary"
+                           readonly="1" nolabel="1"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        نافذة «الإرجاع» — نافذة واحدة بخيارين:
+
+        * ``full``     → الكمية غير قابلة للتحرير (النواة تقرّ: ارجع كل ما بقي).
+        * ``partial``  → المستخدم يكتب الكميات.
+
+        وفوق كل شيء: **شريط تحذير فرق المدفوعات** — يكتب الرقم قبل أن
+        يضغط المستخدم زرًّا واحدًا.
+
+        Odoo 20: لا ``attrs`` ولا ``states`` — عبارات ``invisible`` /
+        ``readonly`` / ``column_invisible`` مباشرة، ومرجع حقل الأب داخل
+        جدول x2many يُكتب ``parent.اسم_الحقل``.
+    -->
+    <record id="view_sale_settlement_return_wizard_form" model="ir.ui.view">
+        <field name="name">sale.settlement.return.wizard.form</field>
+        <field name="model">sale.settlement.return.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Return">
+                <!--
+                    حقول الدومين: يجب إدراجها في الشاشة حتى يقرأها المتصفّح.
+                    ``suitable_picking_ids`` يغذّي دومين ``picking_id``،
+                    و ``order_id`` يلزم الحقول التابعة إن أُشير إليها.
+                -->
+                <field name="order_id" invisible="1"/>
+                <field name="suitable_picking_ids" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+
+                <!--
+                    شريط تحذير فرق المدفوعات: حقل محسوب غير مخزَّن يُعاد
+                    حسابه مع كل تعديل في الكميات أو في رصيد أمر البيع،
+                    فيرى المستخدم ما سيفعله للّفلوس **قبل** الضغط لا بعده.
+                -->
+                <div class="alert alert-warning" role="alert"
+                     invisible="not payment_warning">
+                    <field name="payment_warning" readonly="1" nolabel="1"/>
+                </div>
+
+                <group>
+                    <group string="Return">
+                        <field name="order_id" readonly="1"/>
+                        <!--
+                            ``required`` هنا لا على الحقل: الإلزام الظاهر
+                            للعين هنا، والتحقّق الحاسم في ``action_return``.
+                        -->
+                        <field name="picking_id" required="1"
+                               options="{'no_create': True, 'no_open': True}"/>
+                        <field name="reason_id"
+                               options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+                    <group string="What is being returned">
+                        <field name="mode" widget="radio"/>
+                        <!--
+                            ``currency_id`` إجباري حضورها في الشاشة:
+                            حقل Monetary لا يُرسم ولا يُحوَّل العملة من
+                            دون الحقل المُشار إليه في ``currency_field``.
+                        -->
+                        <field name="settlement_amount" readonly="1"/>
+                    </group>
+                </group>
+
+                <field name="line_ids">
+                    <list editable="bottom" create="false" delete="false">
+                        <!-- السطر الإجباري: الحقول المرتبطة ``product_id`` و
+                             ``uom_id`` لا تُقرأ من دون أن يكون ``move_id``
+                             حاضرًا في الشاشة. -->
+                        <field name="move_id" column_invisible="1"/>
+                        <field name="product_id" readonly="1"/>
+                        <field name="uom_id" readonly="1" optional="show"/>
+                        <!--
+                            ``force_save="1"`` ليس زينة: إن كان الحقل
+                            ``readonly`` في الشاشة يحذفه نموذج Odoo من
+                            مُرسَل الحفظ ما لم يحمل ``forceSave`` —
+                            والنتيجة العملية: يصل ``qty_remaining``
+                            بقيمة صفر كاذبة إلى قيد ``_check_qty_to_return``
+                            مع قيمة ``qty_to_return`` الصحيحة فترفض Odoo
+                            العملية برسالة كاذبة. ونواة Odoo تستعمل
+                            ``force_save`` بالضبط لهذه الحالة
+                            (event_sale/wizard/event_edit_registration.xml).
+                        -->
+                        <field name="qty_delivered" readonly="1"
+                               force_save="1"/>
+                        <field name="qty_remaining" readonly="1"
+                               force_save="1"/>
+                        <field name="qty_to_return"
+                               readonly="parent.mode == 'full'"
+                               force_save="1"/>
+                    </list>
+                </field>
+
+                <footer>
+                    <button name="action_return" string="Return" type="object"
+                            class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

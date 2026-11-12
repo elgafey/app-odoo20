@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  نافذة الدفع: تسجيل أو استبدال  -->
+    <record id="view_sale_settlement_payment_wizard_form" model="ir.ui.view">
+        <field name="name">sale.settlement.payment.wizard.form</field>
+        <field name="model">sale.settlement.payment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Payment">
+                <!-- حقول الدومين: يجب إدراجها في الشاشة حتى يقرأها المتصفّح -->
+                <field name="invoice_ids" invisible="1"/>
+                <field name="available_journal_ids" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+
+                <group>
+                    <group string="Reference">
+                        <field name="order_id" readonly="1"/>
+                        <field name="mode" readonly="1"/>
+                        <field name="invoice_id"/>
+                    </group>
+                    <group string="Payment">
+                        <field name="amount"/>
+                        <field name="payment_date"/>
+                        <field name="journal_id"
+                               options="{'no_create': True, 'no_open': True}"/>
+                        <field name="memo" placeholder="Communication"/>
+                    </group>
+                </group>
+
+                <!--
+                    يظهر فقط في وضع الاستبدال: ما الذي سيُلغى بالضبط.
+                    نص محسوب خلف sudo — لا قائمة سجلات دفعات، لأن
+                    المندوب لا يملك قراءة ``account.payment`` عمدًا.
+                -->
+                <div class="alert alert-warning" role="alert"
+                     invisible="mode != 'replace' or not payment_summary">
+                    <field name="payment_summary" readonly="1" nolabel="1"/>
+                </div>
+
+                <footer>
+                    <button name="action_apply" string="Apply" type="object"
+                            class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

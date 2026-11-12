@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        نافذة «Add Product» — نافذة صغيرة بحقول ثلاثة فقط، وشريط التحذير
+        أوّل ما في النافذة: حقلان محسوبان لا يُخزَّنان فيُعاد حسابهما مع
+        كل تعديل في المنتج أو الكمية، فيرى الموظف المبلغ الذي عليه أن
+        يحصّله **قبل** الضغط.
+    -->
+    <record id="view_sale_settlement_add_product_wizard_form" model="ir.ui.view">
+        <field name="name">sale.settlement.add.product.wizard.form</field>
+        <field name="model">sale.settlement.add.product.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Product">
+                <!-- ``currency_id`` إجباري حضوره: حقل Monetary لا يُرسم
+                     ولا يُحوَّل العملة من دون الحقل المُشار إليه في
+                     ``currency_field``. -->
+                <field name="order_id" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+
+                <!-- شريط تحذير فرق المدفوعات — يُقرأ قبل أي ضغطة. -->
+                <div class="alert alert-warning" role="alert"
+                     invisible="not payment_warning">
+                    <field name="payment_warning" readonly="1" nolabel="1"/>
+                    <div invisible="not payment_net_warning">
+                        <field name="payment_net_warning" readonly="1"
+                               nolabel="1"/>
+                    </div>
+                </div>
+
+                <group>
+                    <field name="product_id"
+                           options="{'no_create': True, 'no_open': True}"/>
+                    <field name="quantity"/>
+                    <field name="amount_total" readonly="1"/>
+                </group>
+
+                <footer>
+                    <button name="action_add_and_invoice"
+                            string="Add and Invoice" type="object"
+                            class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

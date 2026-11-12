@@ -1,0 +1,20 @@
+/* نوع الفاتورة (Cash / Credit) في شاشة أمر البيع:
+   قائمة منسدلة بخلفية صفراء واضحة حتى لا يغفل عنها الموظف. */
+.o_form_view .o_sst_invoice_type {
+    background-color: #fff3cd !important;
+    border: 1px solid #ffca2c !important;
+    border-radius: 4px;
+    color: #664d03 !important;
+    font-weight: 700;
+    padding: 0 4px;
+}
+
+.o_form_view .o_sst_invoice_type select,
+.o_form_view .o_sst_invoice_type input,
+.o_form_view .o_sst_invoice_type .o_input {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #664d03 !important;
+    font-weight: 700;
+}

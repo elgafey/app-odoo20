@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        نافذة «ردّ المال للزبون»: كم مستحقّ، كم ستردّ، وبأي دفتر. والشريط
+        الأصفر أعلى النافذة يكتب ما سيحدث قبل الضغط — نفس مذهب شريط
+        التحذير في نافذة الإرجاع.
+    -->
+    <record id="view_sale_settlement_refund_wizard_form" model="ir.ui.view">
+        <field name="name">sale.settlement.refund.wizard.form</field>
+        <field name="model">sale.settlement.refund.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Refund Customer">
+                <field name="order_id" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="available_refund_journal_ids" invisible="1"/>
+
+                <!--
+                    شريط ماذا سيحدث. حقل محسوب غير مخزَّن يُعاد حسابه
+                    مع كل تغيير في المبلغ أو الدفتر، فيرى المستخدم
+                    النتيجة **قبل** الضغط لا بعده.
+                -->
+                <div class="alert alert-warning" role="alert"
+                     invisible="not payment_warning">
+                    <field name="payment_warning" readonly="1" nolabel="1"/>
+                </div>
+
+                <group>
+                    <group string="Give back">
+                        <field name="order_id" readonly="1"/>
+                        <field name="amount_owed" readonly="1"/>
+                        <!--
+                            المبلغ مملوء مسبقًا بالمبلغ المستحقّ كاملًا
+                            (``default_get``) وهو قابل للتعديل حين يردّ
+                            المستخدم على مراحل.
+                        -->
+                        <field name="amount"/>
+                    </group>
+                    <group string="Through">
+                        <field name="refund_journal_id"
+                               options="{'no_open': True, 'no_create': True}"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="action_refund" string="Give Back"
+                            type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
