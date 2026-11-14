@@ -1,0 +1,749 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* material_request
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-14 09:00+0000\n"
+"PO-Revision-Date: 2026-11-14 09:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: material_request
+#: model:ir.module.category,name
+msgid "Material Request"
+msgstr "طلب مواد"
+
+#. module: material_request
+#: model:ir.model,name:material_request.model_material_request
+msgid "Material Request"
+msgstr "طلب مواد"
+
+#. module: material_request
+#: model:ir.model,name:material_request.model_material_request_line
+msgid "Material Request Line"
+msgstr "سطر طلب مواد"
+
+#. module: material_request
+#: model:res.groups.privilege,name:material_request.res_groups_privilege_material_request
+msgid "Material Request"
+msgstr "طلب مواد"
+
+#. module: material_request
+#: model:res.groups,name:material_request.group_material_request_user
+msgid "User"
+msgstr "مستخدم"
+
+#. module: material_request
+#: model:res.groups,name:material_request.group_material_request_manager
+msgid "Administrator"
+msgstr "مدير النظام"
+
+#. module: material_request
+#: model:res.groups,comment:material_request.group_material_request_user
+msgid ""
+"Creates Material Requests (branch transfers and purchases) and sees the "
+"transfers of his allowed branches."
+msgstr ""
+"ينشئ طلبات المواد (تحويلات بين الفروع وطلبات شراء) ويرى تحويلات الفروع "
+"المسموح بها له."
+
+#. module: material_request
+#: model:res.groups,comment:material_request.group_material_request_manager
+msgid ""
+"Sees all Material Requests, approves purchase requests, assigns allowed "
+"branches to users and names branches."
+msgstr ""
+"يرى جميع طلبات المواد، ويوافق على طلبات الشراء، ويسند الفروع المسموح بها "
+"للمستخدمين، ويسمّي الفروع."
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__name
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__request_type
+msgid "Request Type"
+msgstr "نوع الطلب"
+
+#. module: material_request
+#: selection:material.request,request_type:0
+msgid "Branch Transfer Request"
+msgstr "طلب تحويل بين الفروع"
+
+#. module: material_request
+#: selection:material.request,request_type:0
+msgid "Purchase Request"
+msgstr "طلب شراء"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__state
+msgid "Status"
+msgstr "الحالة"
+
+#. module: material_request
+#: selection:material.request,state:0
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: material_request
+#: selection:material.request,state:0
+msgid "Submitted"
+msgstr "مُرسَل"
+
+#. module: material_request
+#: selection:material.request,state:0
+msgid "Approved"
+msgstr "موافَق عليه"
+
+#. module: material_request
+#: selection:material.request,state:0
+msgid "In Transit"
+msgstr "قيد النقل"
+
+#. module: material_request
+#: selection:material.request,state:0
+msgid "Done"
+msgstr "منجز"
+
+#. module: material_request
+#: selection:material.request,state:0
+msgid "Cancelled"
+msgstr "ملغى"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__requester_id
+msgid "Requested By"
+msgstr "مطلِب الطلب"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__date
+msgid "Request Date"
+msgstr "تاريخ الطلب"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__location_src_id
+msgid "Requested From (Branch)"
+msgstr "الطلب من (فرع)"
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_material_request__location_src_id
+msgid ""
+"Branch (internal location) the goods are requested from. Only used by "
+"Branch Transfer Requests."
+msgstr ""
+"الفرع (موقع داخلي) الذي تُطلب منه السلع. يُستخدم فقط في طلبات التحويل بين "
+"الفروع."
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__location_dest_id
+msgid "Requested For (Branch)"
+msgstr "الطلب لصالح (فرع)"
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_material_request__location_dest_id
+msgid ""
+"Branch (internal location) asking for the goods: the receiving branch of a "
+"transfer, or the branch the purchase is delivered to."
+msgstr ""
+"الفرع (موقع داخلي) الذي يطلب السلع: فرع الاستلام في التحويل، أو الفرع الذي "
+"يُسلَّم إليه الشراء."
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__partner_id
+msgid "Vendor"
+msgstr "المورّد"
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_material_request__partner_id
+msgid ""
+"Vendor to buy from. Required when a Purchase Request is approved because a "
+"purchase order needs a partner."
+msgstr ""
+"المورّد الذي يُشترى منه. مطلوب عند الموافقة على طلب شراء لأن أمر الشراء "
+"يحتاج إلى شريك."
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__line_ids
+#: model:ir.model.fields,field_description:material_request.field_material_request_line__product_id
+msgid "Products"
+msgstr "المنتجات"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__product_ids
+msgid "Requested Products"
+msgstr "المنتجات المطلوبة"
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_material_request__product_ids
+msgid "Products of the request lines, for search and display."
+msgstr "منتجات أسطر الطلب، للبحث والعرض."
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__notes
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__picking_out_id
+msgid "Shipping Transfer"
+msgstr "تحويل الإرسال"
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_material_request__picking_out_id
+msgid "First leg: from the source branch to the transit location."
+msgstr "المرحلة الأولى: من الفرع المصدر إلى موقع العبور."
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__picking_in_id
+msgid "Receiving Transfer"
+msgstr "تحويل الاستلام"
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_material_request__picking_in_id
+msgid ""
+"Latest leg created: from the transit location to the requesting branch. "
+"Partial shipments create one receiving transfer per leg."
+msgstr ""
+"آخر مرحلة تم إنشاؤها: من موقع العبور إلى الفرع الطالب. تنشئ الإرسالات "
+"الجزئية تحويل استلام لكل مرحلة."
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__picking_ids
+msgid "Transfers"
+msgstr "التحويلات"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__picking_count
+msgid "Transfers Count"
+msgstr "عدد التحويلات"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__purchase_order_id
+msgid "Purchase Order"
+msgstr "أمر شراء"
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_material_request__purchase_order_id
+msgid "Draft RFQ created when a Purchase Request is approved."
+msgstr "طلب عرض أسعار (مسودة) يُنشأ عند الموافقة على طلب الشراء."
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__qty_requested
+msgid "Requested Quantity"
+msgstr "الكمية المطلوبة"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__qty_shipped
+msgid "Shipped Quantity"
+msgstr "الكمية المشحونة"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request__qty_received
+msgid "Received Quantity"
+msgstr "الكمية المستلمة"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request_line__quantity
+msgid "Quantity"
+msgstr "الكمية"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request_line__uom_id
+msgid "Unit"
+msgstr "الوحدة"
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_material_request_line__uom_id
+msgid "The product's Unit of Measure."
+msgstr "وحدة قياس المنتج."
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_material_request_line__request_id
+msgid "Request"
+msgstr "الطلب"
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_stock_location__branch_name
+msgid "Branch Name"
+msgstr "اسم الفرع"
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_stock_location__branch_name
+msgid ""
+"Name under which this internal location is displayed when it is used as a "
+"branch in Material Requests. Leave empty to keep the standard location name."
+msgstr ""
+"الاسم الذي يُعرض به هذا الموقع الداخلي عند استخدامه كفرع في طلبات المواد. "
+"اتركه فارغًا للاحتفاظ باسم الموقع القياسي."
+
+#. module: material_request
+#: model:ir.model.fields,field_description:material_request.field_res_users__mr_allowed_location_ids
+msgid "Allowed Material Request Branches"
+msgstr "فروع طلبات المواد المسموح بها"
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_res_users__mr_allowed_location_ids
+msgid ""
+"Branches (internal locations) whose real transfers - sending or receiving - "
+"this user may see and process. Used by the Material Request module to "
+"restrict stock transfers visibility."
+msgstr ""
+"الفروع (المواقع الداخلية) التي يمكن لهذا المستخدم رؤية تحويلاتها الحقيقية - "
+"الإرسال أو الاستلام - ومعالجتها. تستخدمه وحدة طلبات المواد لتقييد ظهور "
+"تحويلات المخزون."
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_stock_picking__material_request_id
+msgid ""
+"Material request this transfer belongs to (shipping leg from the source "
+"branch to transit, or receiving leg to the requesting branch)."
+msgstr ""
+"طلب المواد الذي ينتمي إليه هذا التحويل (مرحلة الإرسال من الفرع المصدر إلى "
+"العبور، أو مرحلة الاستلام إلى الفرع الطالب)."
+
+#. module: material_request
+#: model:ir.model.fields,help:material_request.field_purchase_order__material_request_id
+msgid "Material request this draft RFQ was created from."
+msgstr "طلب المواد الذي أُنشئ منه أمر عرض الأسعار هذا."
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_form
+msgid "Submit"
+msgstr "إرسال"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_form
+msgid "Approve"
+msgstr "موافقة"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_form
+msgid "Reset to Draft"
+msgstr "إعادة إلى مسودة"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_form
+msgid "Transfers"
+msgstr "التحويلات"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_form
+msgid "RFQ"
+msgstr "طلب عرض أسعار"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_form
+msgid "Products"
+msgstr "المنتجات"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_form
+msgid "Transfer Progress"
+msgstr "تقدم التحويل"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_form
+msgid "Purchase"
+msgstr "الشراء"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_form
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_form
+msgid ""
+"Cancel this request? Open transfers will be cancelled; quantities already "
+"shipped or received stay in the branches."
+msgstr ""
+"إلغاء هذا الطلب؟ سيتم إلغاء التحويلات المفتوحة؛ وتبقى الكميات المشحونة أو "
+"المستلمة بالفعل في الفروع."
+
+#. module: material_request
+#: model:ir.actions.act_window,name:material_request.action_material_request
+#: model:ir.ui.menu,name:material_request.menu_material_request_all
+msgid "All Requests"
+msgstr "جميع الطلبات"
+
+#. module: material_request
+#: model:ir.actions.act_window,name:material_request.action_material_request_my
+#: model:ir.ui.menu,name:material_request.menu_material_request_my
+msgid "My Requests"
+msgstr "طلباتي"
+
+#. module: material_request
+#: model:ir.ui.menu,name:material_request.menu_material_request_root
+msgid "Material Requests"
+msgstr "طلبات المواد"
+
+#. module: material_request
+#: model:ir.ui.menu,name:material_request.menu_material_request_requests
+msgid "Requests"
+msgstr "الطلبات"
+
+#. module: material_request
+#: model:ir.ui.menu,name:material_request.menu_material_request_config
+msgid "Configuration"
+msgstr "الإعدادات"
+
+#. module: material_request
+#: model:ir.ui.menu,name:material_request.menu_material_request_branches
+#: model:ir.actions.act_window,name:material_request.action_material_request_branches
+msgid "Branches"
+msgstr "الفروع"
+
+#. module: material_request
+#: model:ir.ui.menu,name:material_request.menu_material_request_allowed_branches
+#: model:ir.actions.act_window,name:material_request.action_material_request_allowed_branches
+msgid "Branch Access"
+msgstr "صلاحيات الفروع"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_branch_list
+msgid "Branches"
+msgstr "الفروع"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_branch_search
+msgid "Search Branch"
+msgstr "بحث فرع"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_branch_search
+msgid "Internal"
+msgstr "داخلي"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_branch_search
+msgid "Archived"
+msgstr "مؤرشف"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_branch_search
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_branch_search
+msgid "Company"
+msgstr "الشركة"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_allowed_branches_list
+msgid "Branch Access"
+msgstr "صلاحيات الفروع"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_search
+msgid "Material Requests"
+msgstr "طلبات المواد"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_search
+msgid "Branch Transfer"
+msgstr "تحويل بين الفروع"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_search
+msgid "Purchase"
+msgstr "شراء"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_search
+msgid "My Requests"
+msgstr "طلباتي"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_search
+msgid "Request Type"
+msgstr "نوع الطلب"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_search
+msgid "Source Branch"
+msgstr "الفرع المصدر"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_search
+msgid "Requesting Branch"
+msgstr "الفرع الطالب"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_search
+msgid "Requested By"
+msgstr "مطلِب الطلب"
+
+#. module: material_request
+#: model_terms:ir.ui.view,arch_db:material_request.view_material_request_list
+msgid "Material Requests"
+msgstr "طلبات المواد"
+
+#. module: material_request
+#: model:ir.actions.act_window,help:material_request.action_material_request
+msgid "Create a material request"
+msgstr "إنشاء طلب مواد"
+
+#. module: material_request
+#: model:ir.actions.act_window,help:material_request.action_material_request
+#: model:ir.actions.act_window,help:material_request.action_material_request_my
+msgid ""
+"Either ask another branch for goods (branch transfer) or ask for a purchase "
+"request for quotation."
+msgstr ""
+"اطلب سلعًا من فرع آخر (تحويل بين الفروع) أو أنشئ طلب شراء لطلب عرض أسعار."
+
+#. module: material_request
+#: model:ir.actions.act_window,help:material_request.action_material_request_my
+msgid "Create your first material request"
+msgstr "أنشئ أول طلب مواد لك"
+
+#. module: material_request
+#: model:ir.actions.act_window,help:material_request.action_material_request_branches
+msgid "Set a branch name on internal locations"
+msgstr "عيّن اسم فرع للمواقع الداخلية"
+
+#. module: material_request
+#: model:ir.actions.act_window,help:material_request.action_material_request_branches
+msgid ""
+"Every internal location used as a branch in Material Requests should carry "
+"a Branch Name: it is how the branch is displayed everywhere."
+msgstr ""
+"كل موقع داخلي يُستخدم كفرع في طلبات المواد يجب أن يحمل اسم فرع: فهو الطريقة "
+"التي يُعرض بها الفرع في كل مكان."
+
+#. module: material_request
+#: model:ir.actions.act_window,help:material_request.action_material_request_allowed_branches
+msgid "No user found"
+msgstr "لا يوجد مستخدمون"
+
+#. module: material_request
+#: model:ir.actions.act_window,help:material_request.action_material_request_allowed_branches
+msgid ""
+"For each user, select the branches (internal locations) whose material "
+"request transfers he may see: the branches he sends goods from and the "
+"branches he receives goods into. Users see their own requests in any case."
+msgstr ""
+"لكل مستخدم، اختر الفروع (المواقع الداخلية) التي يمكنه رؤية تحويلات طلبات "
+"المواد الخاصة بها: الفروع التي يرسل منها السلع والفروع التي يستلم إليها "
+"السلع. يرى المستخدمون طلباتهم الخاصة في كل الأحوال."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Only Material Request managers may do this."
+msgstr "مديرو طلبات المواد فقط يمكنهم القيام بذلك."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Only Material Request managers may approve a Purchase Request."
+msgstr "مديرو طلبات المواد فقط يمكنهم الموافقة على طلب شراء."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Only the source branch (%s) may approve this transfer request."
+msgstr "الفرع المصدر (%s) فقط يمكنه الموافقة على طلب التحويل هذا."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "You are not allowed to cancel this request."
+msgstr "لا يُسمح لك بإلغاء هذا الطلب."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid ""
+"A Branch Transfer Request needs both branches: \"Requested From\" and "
+"\"Requested For\"."
+msgstr "طلب التحويل بين الفروع يحتاج إلى الفرعين معًا: «الطلب من» و«الطلب لصالح»."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "The source branch and the requesting branch must be different."
+msgstr "يجب أن يختلف الفرع المصدر عن الفرع الطالب."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Add at least one product to the request."
+msgstr "أضف منتجًا واحدًا على الأقل إلى الطلب."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Product %s cannot be transferred: it is not storable."
+msgstr "لا يمكن تحويل المنتج %s: لأنه غير قابل للتخزين."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Set a quantity for product %s."
+msgstr "عيّن كمية للمنتج %s."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "A Purchase Request needs the requesting branch (\"Requested For\")."
+msgstr "طلب الشراء يحتاج إلى الفرع الطالب («الطلب لصالح»)."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid ""
+"A vendor is required to approve a Purchase Request: the purchase order "
+"needs a partner."
+msgstr "المورّد مطلوب للموافقة على طلب الشراء: أمر الشراء يحتاج إلى شريك."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Product %s cannot be purchased."
+msgstr "لا يمكن شراء المنتج %s."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Only a draft request can be submitted."
+msgstr "يمكن إرسال الطلب في حالة المسودة فقط."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Request submitted for approval."
+msgstr "أُرسل الطلب للموافقة عليه."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Only a submitted request can be approved."
+msgstr "يمكن الموافقة على الطلب في حالة «مُرسَل» فقط."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "A shipping transfer already exists for this request."
+msgstr "يوجد تحويل إرسال لهذا الطلب بالفعل."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid ""
+"Request approved. Shipping transfer %s (from %s to the transit location) is "
+"waiting for the source branch to validate it."
+msgstr ""
+"تمت الموافقة على الطلب. تحويل الإرسال %s (من %s إلى موقع العبور) ينتظر أن "
+"يقوم الفرع المصدر بتصديقه."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "A purchase order (RFQ) already exists for this request: %s."
+msgstr "يوجد أمر شراء (طلب عرض أسعار) لهذا الطلب بالفعل: %s."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Request approved. Draft RFQ %s has been created for %s."
+msgstr "تمت الموافقة على الطلب. أُنشئ أمر عرض أسعار (مسودة) %s لصالح %s."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "This request is already finished."
+msgstr "انتهى هذا الطلب بالفعل."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid ""
+"Request cancelled. Quantities already shipped/received stay in the branches "
+"(shipped: %(shipped)s, received: %(received)s)."
+msgstr ""
+"أُلغي الطلب. تبقى الكميات المشحونة/المستلمة بالفعل في الفروع (المشحون: "
+"%(shipped)s، المستلم: %(received)s)."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Request reset to draft."
+msgstr "أُعيد الطلب إلى مسودة."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid ""
+"This cancelled request already has transfers (shipped: %(shipped)s, "
+"received: %(received)s). Create a new request instead of reusing it."
+msgstr ""
+"هذا الطلب الملغى يحتوي على تحويلات بالفعل (المشحون: %(shipped)s، المستلم: "
+"%(received)s). أنشئ طلبًا جديدًا بدلًا من إعادة استخدام هذا الطلب."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Cancelled request reopened as draft."
+msgstr "أُعيد فتح الطلب الملغى كمسودة."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Only a submitted or a cancelled request can be reset to draft."
+msgstr "يمكن إعادة الطلب في حالة «مُرسَل» أو «ملغى» فقط إلى المسودة."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid ""
+"No internal transfer operation type found for company %s. Create a "
+"warehouse or an internal operation type first."
+msgstr ""
+"لم يُعثر على نوع عملية تحويل داخلي للشركة %s. أنشئ مستودعًا أو نوع عملية "
+"داخلية أولًا."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid ""
+"Goods left %s: receiving transfer %s (transit -> %s) is now ready for the "
+"requesting branch."
+msgstr ""
+"خرجت السلع من %s: تحويل الاستلام %s (العبور ← %s) أصبح جاهزًا الآن للفرع "
+"الطالب."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid ""
+"All transfers are validated: the request is done (received %(received)s out "
+"of %(requested)s)."
+msgstr ""
+"تم تصديق جميع التحويلات: انتهى الطلب (استُلم %(received)s من إجمالي "
+"%(requested)s)."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid ""
+"All transfers are validated: the full quantity is received. The request is "
+"done."
+msgstr "تم تصديق جميع التحويلات: استُلمت الكمية كاملة. انتهى الطلب."
+
+#. module: material_request
+#: code:addons/material_request/models/material_request.py:0
+msgid "Purchase order %s confirmed: the request is done."
+msgstr "تم تأكيد أمر الشراء %s: انتهى الطلب."
+
+#. module: material_request
+#: code:addons/material_request/models/res_users.py:0
+msgid ""
+"You cannot change your own allowed Material Request branches. Ask a "
+"Material Request manager."
+msgstr ""
+"لا يمكنك تغيير فروع طلبات المواد المسموح بها لك بنفسك. اطلب ذلك من مدير "
+"طلبات المواد."
+
+#. module: material_request
+#: model:ir.model.constraint,message:material_request.constraint_material_request__unique_reference
+msgid "The material request reference must be unique!"
+msgstr "يجب أن يكون مرجع طلب المواد فريدًا!"
+
+#. module: material_request
+#: model:ir.model.constraint,message:material_request.constraint_stock_location__branch_name_unique
+msgid ""
+"This branch name is already used by another branch (internal location)."
+msgstr "اسم الفرع هذا مستخدم بالفعل في فرع آخر (موقع داخلي)."

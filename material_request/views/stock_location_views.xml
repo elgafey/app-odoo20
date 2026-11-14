@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ==================== stock.location: branch name ==================== -->
+    <record id="view_location_form_inherit_material_request" model="ir.ui.view">
+        <field name="name">stock.location.form.material.request</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='additional_info']" position="inside">
+                <field name="branch_name"
+                       invisible="usage != 'internal'"
+                       help="Displayed as the branch name in Material Requests and everywhere this location is shown."/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Branch list for the Configuration menu: internal locations only -->
+    <record id="view_material_request_branch_list" model="ir.ui.view">
+        <field name="name">stock.location.material.request.branch.list</field>
+        <field name="model">stock.location</field>
+        <field name="arch" type="xml">
+            <list string="Branches">
+                <field name="branch_name"/>
+                <field name="name"/>
+                <field name="complete_name"/>
+                <field name="usage" column_invisible="1"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_material_request_branch_search" model="ir.ui.view">
+        <field name="name">stock.location.material.request.branch.search</field>
+        <field name="model">stock.location</field>
+        <field name="arch" type="xml">
+            <search string="Search Branch">
+                <field name="name"/>
+                <field name="branch_name"/>
+                <field name="complete_name"/>
+                <filter name="internal" string="Internal" domain="[('usage', '=', 'internal')]"/>
+                <filter name="inactive" string="Archived" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter name="group_by_company" string="Company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_material_request_branches" model="ir.actions.act_window">
+        <field name="name">Branches</field>
+        <field name="res_model">stock.location</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('usage', '=', 'internal')]</field>
+        <field name="context">{'search_default_internal': 1}</field>
+        <field name="search_view_id" ref="view_material_request_branch_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Set a branch name on internal locations</p>
+            <p>Every internal location used as a branch in Material Requests
+               should carry a Branch Name: it is how the branch is displayed
+               everywhere.</p>
+        </field>
+    </record>
+
+    <!-- ==================== res.users: allowed branches ==================== -->
+    <record id="view_users_form_inherit_material_request" model="ir.ui.view">
+        <field name="name">res.users.form.material.request</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='page_security']" position="after">
+                <page string="Material Request" name="material_request"
+                      groups="material_request.group_material_request_manager">
+                    <group>
+                        <field name="mr_allowed_location_ids" widget="many2many_tags"
+                               options="{'no_create': True}"
+                               domain="[('usage', '=', 'internal')]"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_users_tree_inherit_material_request" model="ir.ui.view">
+        <field name="name">res.users.tree.material.request</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="mr_allowed_location_ids" widget="many2many_tags"
+                       options="{'no_create': True}" optional="hide"
+                       groups="material_request.group_material_request_manager"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Branch access assignment screen (Configuration) -->
+    <record id="view_material_request_allowed_branches_list" model="ir.ui.view">
+        <field name="name">res.users.material.request.allowed.branches.list</field>
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <list string="Branch Access" multi_edit="1">
+                <field name="active" column_invisible="1"/>
+                <field name="name" readonly="1"/>
+                <field name="login" readonly="1" optional="show"/>
+                <field name="mr_allowed_location_ids" widget="many2many_tags"
+                       options="{'no_create': True}"/>
+                <field name="company_ids" groups="base.group_multi_company" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_material_request_allowed_branches" model="ir.actions.act_window">
+        <field name="name">Branch Access</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('share', '=', False)]</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_list">No user found</p>
+            <p>For each user, select the branches (internal locations) whose
+               material request transfers he may see: the branches he sends
+               goods from and the branches he receives goods into.  Users see
+               their own requests in any case.</p>
+        </field>
+    </record>
+
+    <!-- Configuration menu items -->
+    <menuitem id="menu_material_request_branches" name="Branches"
+              parent="menu_material_request_config"
+              action="action_material_request_branches" sequence="10"/>
+    <menuitem id="menu_material_request_allowed_branches" name="Branch Access"
+              parent="menu_material_request_config"
+              action="action_material_request_allowed_branches" sequence="20"/>
+
+</odoo>

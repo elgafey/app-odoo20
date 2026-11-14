@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ==================== Search ==================== -->
+    <record id="view_material_request_search" model="ir.ui.view">
+        <field name="name">material.request.search</field>
+        <field name="model">material.request</field>
+        <field name="arch" type="xml">
+            <search string="Material Requests">
+                <field name="name"/>
+                <field name="requester_id"/>
+                <field name="location_src_id"/>
+                <field name="location_dest_id"/>
+                <field name="partner_id"/>
+                <field name="picking_out_id"/>
+                <field name="picking_in_id"/>
+                <field name="purchase_order_id"/>
+                <field name="product_ids"/>
+                <separator/>
+                <filter name="type_transfer" string="Branch Transfer" domain="[('request_type', '=', 'transfer')]"/>
+                <filter name="type_purchase" string="Purchase" domain="[('request_type', '=', 'purchase')]"/>
+                <separator/>
+                <filter name="state_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="state_submitted" string="Submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter name="state_approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                <filter name="state_in_transit" string="In Transit" domain="[('state', '=', 'in_transit')]"/>
+                <filter name="state_done" string="Done" domain="[('state', '=', 'done')]"/>
+                <filter name="state_cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter name="filter_mine" string="My Requests" domain="[('requester_id', '=', uid)]"/>
+                <separator/>
+                <filter name="group_by_request_type" string="Request Type" context="{'group_by': 'request_type'}"/>
+                <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                <filter name="group_by_src" string="Source Branch" context="{'group_by': 'location_src_id'}"/>
+                <filter name="group_by_dest" string="Requesting Branch" context="{'group_by': 'location_dest_id'}"/>
+                <filter name="group_by_requester" string="Requested By" context="{'group_by': 'requester_id'}"/>
+                <filter name="group_by_date" string="Request Date" context="{'group_by': 'date'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ==================== List ==================== -->
+    <record id="view_material_request_list" model="ir.ui.view">
+        <field name="name">material.request.list</field>
+        <field name="model">material.request</field>
+        <field name="arch" type="xml">
+            <list string="Material Requests" sample="1">
+                <field name="name"/>
+                <field name="request_type" widget="badge"
+                       decoration-info="request_type == 'transfer'"
+                       decoration-success="request_type == 'purchase'"/>
+                <field name="requester_id" widget="many2one_avatar_user"/>
+                <field name="date"/>
+                <field name="location_src_id" optional="show"/>
+                <field name="location_dest_id" optional="show"/>
+                <field name="partner_id" optional="hide"/>
+                <field name="product_ids" widget="many2many_tags" optional="show"/>
+                <field name="picking_out_id" optional="hide"/>
+                <field name="picking_in_id" optional="hide"/>
+                <field name="purchase_order_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"
+                       decoration-info="state in ('draft', 'submitted')"
+                       decoration-warning="state in ('approved', 'in_transit')"
+                       decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ==================== Form ==================== -->
+    <record id="view_material_request_form" model="ir.ui.view">
+        <field name="name">material.request.form</field>
+        <field name="model">material.request</field>
+        <field name="arch" type="xml">
+            <form string="Material Request">
+                <header>
+                    <button name="action_submit" string="Submit" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-primary" invisible="state != 'submitted'"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state not in ('draft', 'submitted', 'approved', 'in_transit')"
+                            confirm="Cancel this request? Open transfers will be cancelled; quantities already shipped or received stay in the branches."/>
+                    <button name="action_reset_draft" string="Reset to Draft" type="object"
+                            invisible="state not in ('submitted', 'cancelled')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,approved,in_transit,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_pickings" type="object" class="oe_stat_button"
+                                icon="fa-truck" invisible="picking_count == 0">
+                            <field name="picking_count" widget="statinfo" string="Transfers"/>
+                        </button>
+                        <button name="action_view_purchase_order" type="object" class="oe_stat_button"
+                                icon="fa-shopping-cart" invisible="not purchase_order_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">RFQ</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="request_type" readonly="state != 'draft'"/>
+                            <field name="requester_id" readonly="state != 'draft'"/>
+                            <field name="date"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="location_src_id"
+                                   invisible="request_type != 'transfer'"
+                                   readonly="state != 'draft'"/>
+                            <field name="location_dest_id" readonly="state != 'draft'"/>
+                            <field name="partner_id"
+                                   invisible="request_type != 'purchase'"
+                                   readonly="state != 'draft'"/>
+                            <field name="purchase_order_id" invisible="1"/>
+                            <field name="picking_out_id" invisible="1"/>
+                            <field name="picking_in_id" invisible="1"/>
+                            <field name="picking_count" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products" name="products">
+                            <field name="line_ids" readonly="state != 'draft'">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Transfer Progress" name="transfer"
+                              invisible="request_type != 'transfer'">
+                            <group>
+                                <group>
+                                    <field name="qty_requested"/>
+                                    <field name="qty_shipped"/>
+                                    <field name="qty_received"/>
+                                </group>
+                                <group>
+                                    <field name="picking_out_id"/>
+                                    <field name="picking_in_id"/>
+                                </group>
+                            </group>
+                            <field name="picking_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="location_id" string="From"/>
+                                    <field name="location_dest_id" string="To"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Purchase" name="purchase"
+                              invisible="request_type != 'purchase'">
+                            <field name="purchase_order_id"/>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Why are these products needed?"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ==================== Actions ==================== -->
+    <record id="action_material_request" model="ir.actions.act_window">
+        <field name="name">All Requests</field>
+        <field name="res_model">material.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_material_request_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a material request</p>
+            <p>Either ask another branch for goods (branch transfer) or ask for a
+               purchase request for quotation.</p>
+        </field>
+    </record>
+
+    <record id="action_material_request_my" model="ir.actions.act_window">
+        <field name="name">My Requests</field>
+        <field name="res_model">material.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_material_request_search"/>
+        <field name="context">{'search_default_filter_mine': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first material request</p>
+            <p>Either ask another branch for goods (branch transfer) or ask for a
+               purchase request for quotation.</p>
+        </field>
+    </record>
+
+    <!-- ==================== Menus ==================== -->
+    <menuitem id="menu_material_request_root" name="Material Requests"
+              sequence="45"
+              web_icon="material_request,static/description/icon.png"
+              groups="material_request.group_material_request_user,material_request.group_material_request_manager"/>
+
+    <menuitem id="menu_material_request_requests" name="Requests"
+              parent="menu_material_request_root" sequence="1"/>
+    <menuitem id="menu_material_request_my" name="My Requests"
+              parent="menu_material_request_requests"
+              action="action_material_request_my" sequence="10"/>
+    <menuitem id="menu_material_request_all" name="All Requests"
+              parent="menu_material_request_requests"
+              action="action_material_request" sequence="20"/>
+
+    <menuitem id="menu_material_request_config" name="Configuration"
+              parent="menu_material_request_root" sequence="99"
+              groups="material_request.group_material_request_manager"/>
+
+</odoo>

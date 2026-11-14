@@ -1,0 +1,19 @@
+id,name,model_id,group_id/id,operation,domain
+access_material_request_user,material.request user,material.request,material_request.group_material_request_user,crud,"['|', '|', ('requester_id', '=', user.id), ('location_src_id', 'in', user.mr_allowed_location_ids.ids), ('location_dest_id', 'in', user.mr_allowed_location_ids.ids)]"
+access_material_request_manager,material.request manager,material.request,material_request.group_material_request_manager,crud,
+material_request_comp_rule,material.request multi-company,material.request,,crud,"[('company_id', 'in', company_ids)]"
+access_material_request_line_user,material.request.line user,material.request.line,material_request.group_material_request_user,crud,"['|', '|', ('request_id.requester_id', '=', user.id), ('request_id.location_src_id', 'in', user.mr_allowed_location_ids.ids), ('request_id.location_dest_id', 'in', user.mr_allowed_location_ids.ids)]"
+access_material_request_line_manager,material.request.line manager,material.request.line,material_request.group_material_request_manager,crud,
+material_request_line_comp_rule,material.request.line multi-company,material.request.line,,crud,"[('company_id', 'in', company_ids)]"
+access_material_request_picking_user,stock.picking material request user,stock.picking,material_request.group_material_request_user,ru,"['|', ('location_id', 'in', user.mr_allowed_location_ids.ids), ('location_dest_id', 'in', user.mr_allowed_location_ids.ids)]"
+access_material_request_picking_manager,stock.picking material request manager,stock.picking,material_request.group_material_request_manager,r,
+access_material_request_move_user,stock.move material request user,stock.move,material_request.group_material_request_user,ru,"[('picking_id', 'access', 'write')]"
+access_material_request_move_manager,stock.move material request manager,stock.move,material_request.group_material_request_manager,r,
+access_material_request_move_line_user,stock.move.line material request user,stock.move.line,material_request.group_material_request_user,crud,"[('picking_id', 'access', 'write')]"
+access_material_request_move_line_manager,stock.move.line material request manager,stock.move.line,material_request.group_material_request_manager,r,
+access_material_request_stock_lot_user,stock.lot material request user,stock.lot,material_request.group_material_request_user,cru,
+access_material_request_purchase_order_user,purchase.order material request user,purchase.order,material_request.group_material_request_user,r,"[('material_request_id', '!=', False)]"
+access_material_request_purchase_order_manager,purchase.order material request manager,purchase.order,material_request.group_material_request_manager,r,"[('material_request_id', '!=', False)]"
+access_material_request_purchase_order_line_user,purchase.order.line material request user,purchase.order.line,material_request.group_material_request_user,r,"[('order_id', 'access', 'read')]"
+access_material_request_purchase_order_line_manager,purchase.order.line material request manager,purchase.order.line,material_request.group_material_request_manager,r,"[('order_id', 'access', 'read')]"
+access_material_request_stock_location_manager,stock.location branch naming,stock.location,material_request.group_material_request_manager,u,

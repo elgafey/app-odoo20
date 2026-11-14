@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- A dedicated "privilege" so the two groups appear as their own section
+         in Settings > Users (Odoo 20 uses res.groups.privilege, not the old
+         res.groups.category_id). -->
+    <record id="res_groups_privilege_material_request" model="res.groups.privilege">
+        <field name="name">Material Request</field>
+        <field name="category_id" ref="base.module_category_supply_chain"/>
+    </record>
+
+    <!-- The requester: creates requests for any branch and sees/processes the
+         transfers of the branches assigned to him. -->
+    <record id="group_material_request_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="res_groups_privilege_material_request"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Creates Material Requests (branch transfers and
+            purchases) and sees the transfers of his allowed branches.</field>
+    </record>
+
+    <!-- The manager: sees everything, approves purchase requests, assigns
+            branches to users and maintains branch names. -->
+    <record id="group_material_request_manager" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="res_groups_privilege_material_request"/>
+        <field name="implied_ids" eval="[(4, ref('group_material_request_user'))]"/>
+        <field name="comment">Sees all Material Requests, approves purchase
+            requests, assigns allowed branches to users and names branches.</field>
+    </record>
+
+</odoo>
